@@ -1,0 +1,84 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: "Todo App",
+      home: ScaffoldWidget(),
+    );
+  }
+}
+
+class ScaffoldWidget extends StatelessWidget {
+  const ScaffoldWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("list"),
+        backgroundColor: const Color.fromARGB(255, 54, 165, 244),
+      ),
+      body: const MainFrame(),
+    );
+  }
+}
+
+class MainFrame extends StatefulWidget {
+  const MainFrame({super.key});
+
+  @override
+  State<MainFrame> createState() => _MainFrameState();
+}
+
+class _MainFrameState extends State<MainFrame> {
+  TextEditingController tec1 = TextEditingController();
+  List liste = [];
+  adding() {
+    setState(() {
+      liste.add(tec1.text);
+    });
+  }
+
+  deleting() {
+    setState(() {
+      liste.remove(tec1.text);
+      tec1.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Flexible(
+          child: ListView.builder(
+            itemCount: liste.length,
+            itemBuilder: (context, indexNumber) => ListTile(
+              title: Text(liste[indexNumber]),
+            ),
+          ),
+        ),
+        TextField(
+          controller: tec1,
+          decoration: const InputDecoration(
+            labelText: "Entry:",
+            border: OutlineInputBorder(),
+          ),
+        ),
+        ElevatedButton(onPressed: adding, child: const Text("add")),
+        const SizedBox(height: 10),
+        ElevatedButton(onPressed: deleting, child: const Text("delete")),
+      ],
+    );
+  }
+}
